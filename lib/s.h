@@ -1,13 +1,16 @@
 // Filename: s.h
 // Description: s library C implementation.
 // Revision: RevA
-// Release Date: 2022-01-22
+// Release Date: 2022-01-23
 // Primary Author: Sky Hoffert
 // Secondary Author(s): N/A
 // Target Audience: Sky Hoffert and users of the s library.
 
 #ifndef _S_H_
 #define _S_H_
+
+#include <time.h>
+#include <stdio.h>
 
 #define sFalse 0
 #define sTrue 1
@@ -92,18 +95,66 @@ extern inline sBool sFuzzyEquals(double v1, double v2, double fuzz) {
   return sAbs(v1 - v2) < fuzz ? sTrue : sFalse;
 }
 
+// Function: sDate
+// Description: Writes current date (local time) to given buffer.
+// Params:
+//   char* str: buffer to be written to -> must be AT LEAST 10 bytes.
+// Return Value: int, with 0 indicating success and 1 indicating error.
+// Example:
+//   char buf[11];
+//   if (sDate(buf) == 1) { sLogError("Error with sDate call.") }
+//   else { sLog("Today is %s.", buf); }
+//   // this will print "Today is 2022-01-23."
+extern inline int sDate(char* buf) {
+  time_t tmi;
+  time(&tmi);
+  struct tm* info = localtime(&tmi);
+
+  strftime(buf, 11, "%Y-%m-%d", info);
+
+  return 0;
+}
+extern inline int sDateUTC(char* buf) {
+  time_t tmi;
+  time(&tmi);
+  struct tm* info = gmtime(&tmi);
+
+  strftime(buf, 11, "%Y-%m-%d", info);
+
+  return 0;
+}
+
+// Function: sTime
+// Description: Writes current time (local time) to given buffer.
+// Params:
+//   char* str: buffer to be written to -> must be AT LEAST 8 bytes.
+// Return Value: int, with 0 indicating success and 1 indicating error.
+// Example:
+//   char buf[9];
+//   if (sTime(buf) == 1) { sLogError("Error with sTime call.") }
+//   else { sLog("Local time is %s.", buf); }
+//   // this will print "Local time is 13:45:02."
+extern inline int sTime(char* buf) {
+  time_t tmi;
+  time(&tmi);
+  struct tm* info = localtime(&tmi);
+
+  strftime(buf, 9, "%H:%M:%S", info);
+
+  return 0;
+}
+extern inline int sTimeUTC(char* buf) {
+  time_t tmi;
+  time(&tmi);
+  struct tm* info = gmtime(&tmi);
+
+  strftime(buf, 9, "%H:%M:%S", info);
+
+  return 0;
+}
+
 // function sContains(x, y, rx, ry, rw, rh) {
 //   return x > rx - rw/2 && x < rx + rw/2 && y > ry - rh/2 && y < ry + rh/2;
-// }
-
-// function sDateString(datedelim="-", timedelim=":", spacer=" ") {
-//   let now = new Date();
-//   return "" + now.getFullYear() + datedelim +
-//     (now.getMonth()+1).toString().padStart(2, "0") + datedelim +
-//     now.getDate().toString().padStart(2, "0") + spacer +
-//     now.getHours().toString().padStart(2, "0") + timedelim +
-//     now.getMinutes().toString().padStart(2, "0") + timedelim +
-//     now.getSeconds().toString().padStart(2, "0");
 // }
 
 #endif

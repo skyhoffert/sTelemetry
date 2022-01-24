@@ -33,7 +33,6 @@ static volatile int shutdown_flag = 0;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // Function declarations.
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-
 void KeyboardInterruptHandler();
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -52,11 +51,13 @@ int main(int argc, char* argv[]) {
 
   // Main ticking loop where work is done.
   while (shutdown_flag == 0) {
-    temp = ((int) GetCPUTemp_SkyDesktop());
-
+    temp = ((int) GetCPUTemp_SkyDesktop()); // This should be pretty time efficient.
     memset(str, 0, 100);
-    sprintf(str, "Temp=%d", temp);
-    sLog(str);
+    sDateUTC(str);
+    str[10] = ' ';
+    sTimeUTC(str+11);
+    sLog("%s | %d", str, temp);
+
     sleep(1);
   }
 

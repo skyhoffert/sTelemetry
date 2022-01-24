@@ -1,7 +1,7 @@
 // Filename: s.test.c
 // Description: Test file for s library c implementation.
 // Revision: RevA
-// Release Date: 2022-01-22
+// Release Date: 2022-01-23
 // Primary Author: Sky Hoffert
 // Secondary Author(s): N/A
 // Target Audience: Those testing the s library c implementation.
@@ -13,11 +13,19 @@
 void Test_sAbs();
 void Test_sFuzzyEquals();
 void Test_sClamp();
+void Test_sDate();
+void Test_sDateUTC();
+void Test_sTime();
+void Test_sTimeUTC();
 
 int main(int argc, char* argv[]) {
   Test_sAbs();
   Test_sFuzzyEquals();
   Test_sClamp();
+  Test_sDate();
+  Test_sDateUTC();
+  Test_sTime();
+  Test_sTimeUTC();
 
   return 0;
 }
@@ -67,4 +75,52 @@ void Test_sClamp() {
 
   double edge = sClamp(a, 8, 9.999999);
   printf("1|Edge Clamp: %d\n", edge < a);
+}
+
+void Test_sDate() {
+  printf("==== %s ====\n", __func__);
+
+  char buf[10];
+  int retval = -1;
+
+  retval = sDate(buf);
+
+  printf("Today's Date|Date: %s\n", buf);
+  printf("0|Return value: %d\n", retval);
+}
+
+void Test_sDateUTC() {
+  printf("==== %s ====\n", __func__);
+  
+  char buf[10];
+  int retval = -1;
+
+  retval = sDateUTC(buf);
+
+  printf("Today's Date UTC|Date: %s\n", buf);
+  printf("0|Return value: %d\n", retval);
+}
+
+void Test_sTime() {
+  printf("==== %s ====\n", __func__);
+  
+  char buf[8];
+  int retval = -1;
+
+  retval = sTime(buf);
+
+  printf("Local Time|Time: %s\n", buf);
+  printf("0|Return value: %d\n", retval);
+}
+
+void Test_sTimeUTC() {
+  printf("==== %s ====\n", __func__);
+  
+  char buf[8];
+  int retval = -1;
+
+  retval = sTime(buf);
+
+  printf("UTC Time|Time: %s\n", buf);
+  printf("0|Return value: %d\n", retval);
 }
